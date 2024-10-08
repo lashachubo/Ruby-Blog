@@ -2,13 +2,17 @@
 
 <h1>Messages</h1>
 
-<div id="messages">
-  <% @messages.each do |message| %>
-    <%= render message %>
-    <p>
-      <%= link_to "Show this message", message %>
-    </p>
+<%= tag.div do %>
+  <%= tag.div id: "messages", class: "h-96 overflow-auto" do %>
+    <% @messages.each do |message| %>
+      <%= tag.div message.content, class: message.from_current_user ? "sender" : "recipient" %>
+    <% end %>
   <% end %>
-</div>
+
+  <%= form_with model: @conversation.messages.new, url: "/conversations/#{@conversation.id}/messages" do |f| %>
+    <%= f.text_field :content, placeholder: "message..." %>
+    <%= f.submit "send", class: "p-2 font-bold" %>
+  <% end %>
+<% end %>
 
 <%= link_to "New message", new_message_path %>

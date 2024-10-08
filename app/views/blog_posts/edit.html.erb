@@ -1,0 +1,13 @@
+<div class="mx-[200px]">
+  <h2 class="text-2xl font-bold mb-6">Edit Blog</h2>
+
+  <div class="bg-zinc-700 text-gray-300 p-6 rounded-lg shadow-lg">
+    <div class="">
+      <%= render partial: "form", locals: {blog_post: @blog_post} %>  
+    </div>
+
+    <div class="mt-6 text-right">
+      <%= button_to "Delete", @blog_post, method: :delete, data: {turbo_confirm: "Are you sure?"}, class: "bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700" %>
+    </div>
+  </div>
+</div>

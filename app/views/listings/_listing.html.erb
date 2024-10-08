@@ -1,0 +1,27 @@
+<div id="<%= dom_id listing %>">
+
+  <p >
+    <%= smart_image_tag(listing) %>
+  </p>
+
+  <p style="<%= listing.title.nil? ? "visibility: hidden" : "" %> " class="my-5">
+    <strong class="block font-medium mb-1">Title:</strong>
+    <%= listing.title %>
+  </p>
+
+  <p style="<%= listing.price.nil? ? "visibility: hidden" : "" %> " class="my-5">
+    <strong class="block font-medium mb-1">Price:</strong>
+    <%= listing.price %>
+  </p>
+
+  <p style="<%= listing.description.nil? ? "visibility: hidden" : "" %> " class="my-5">
+    <strong class="block font-medium mb-1">Description:</strong>
+    <%= listing.description %>
+  </p>
+
+  <p style="<%= listing.location.nil? ? "visibility: hidden" : "" %> " class="my-5">
+    <strong class="block font-medium mb-1">Location:</strong>
+    <%= listing.location %>
+  </p>
+
+</div>

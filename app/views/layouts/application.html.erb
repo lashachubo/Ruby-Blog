@@ -1,16 +1,49 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>MyProj</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-  </head>
+</head>
+<body class="bg-zinc-800 text-white font-sans">
+    <header class="bg-cream-dark py-4 ">
+      <div class="flex items-center ml-8 mt-4">
+        <h1 class="text-2xl font-bold">
+          <%= link_to "Blogs", blog_posts_path %>
+        </h1>
+        <div class="flex ml-auto mr-6">
+            <% if user_signed_in? %>
+            <%= link_to "Profile", edit_user_registration_path, class: "ml-3 hover:underline" %>
+            <%= link_to "Create Blog", new_blog_post_path, class: "ml-3 hover:underline" %>
+            <%= button_to "Log out", destroy_user_session_path, method: :delete, class: "ml-3 text-red-700 hover:underline" %>
+            <% else %>
+            <%= link_to "Log In", new_user_session_path, class: "bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600" %>
+            <%= link_to "Sign Up", new_user_registration_path, class: "ml-4 text-blue-700 hover:underline" %>
+            <% end %>
+        </div>
+      </div>
 
-  <body>
-    <%= yield %>
-  </body>
+    </header>
+
+    <main class="container mx-auto mt-12 px-5">
+        <p class="notice mb-4 text-green-700"><%= notice %></p>
+        <p class="alert mb-4 text-red-700"><%= alert %></p>
+
+        <div class="mb-8">
+            
+        </div>
+
+        <%= yield %>
+    </main>
+
+    <footer class="bg-cream-dark py-4 mt-12">
+        <div class="container mx-auto text-center text-sm">
+            <p>&copy; <%= Time.now.year %> My Blog. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
 </html>

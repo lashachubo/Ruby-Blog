@@ -13,3 +13,21 @@
  *= require_tree .
  *= require_self
  */
+
+body {
+color: blue;
+}
+
+.recipient {
+float: left;
+background-color: limegreen;
+border-radius: 5px 5px 5px;
+}
+
+.sender {
+border-radius: 0px 5px 5px 5px;
+background-color: beige;
+width: 100px;
+margin-left: auto;
+color: black;
+}

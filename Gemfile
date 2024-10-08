@@ -28,6 +28,12 @@ gem "jbuilder"
 
 gem "devise"
 
+gem 'gemini-ai', '~> 4.2'
+
+gem 'kaminari'
+
+gem 'solargraph'
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
@@ -68,3 +74,5 @@ group :test do
   gem "selenium-webdriver"
 end
 
+
+gem "tailwindcss-rails", "~> 2.6"

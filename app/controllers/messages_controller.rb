@@ -1,9 +1,13 @@
 class MessagesController < ApplicationController
   before_action :set_message, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!
 
   # GET /messages or /messages.json
   def index
-    @messages = Message.all
+    conversation_id = params[:conversation_id]
+    @conversation = Conversation.find(conversation_id)
+    @messages = Message.all if conversation_id.nil?
+    @messages = @conversation.messages.map{|m| m.to_broadcast(current_user.id)}
   end
 
   # GET /messages/1 or /messages/1.json
@@ -21,17 +25,25 @@ class MessagesController < ApplicationController
 
   # POST /messages or /messages.json
   def create
-    @message = Message.new(message_params)
-
-    respond_to do |format|
-      if @message.save
-        format.html { redirect_to message_url(@message), notice: "Message was successfully created." }
-        format.json { render :show, status: :created, location: @message }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @message.errors, status: :unprocessable_entity }
-      end
-    end
+    Rails.logger.info params
+    conversation_id = params[:conversation_id]
+    conversation = Conversation.find(conversation_id)
+    @message = conversation.messages.create!(content: message_params['content'], sender_id: current_user.id )
+    Rails.logger.info(@message)
+    ActionCable.server.broadcast("message_channel", @message.to_broadcast(current_user.id))
+    client = Gemini.new(
+      credentials: {
+        service: 'generative-language-api',
+        api_key: 'AIzaSyDlJDAQtakKYDvCg5XlgPLDS3OQbIRfuoA'
+      },
+      options: { model: 'gemini-pro', server_sent_events: true }
+    )
+    result = client.generate_content({ contents: { role: 'user', parts: { text: "create a one sentence response to this messege: '#{message_params['content']}'" } } })
+    ai_message = conversation.messages.create!(content: result['candidates'][0]['content']['parts'][0]['text'], sender_id: current_user.id)
+    ActionCable.server.broadcast("message_channel", OpenStruct.new(content: ai_message.content, from_current_user: false))
+    head :ok
+    rescue StandardError => e
+      Rails.logger.info e.message
   end
 
   # PATCH/PUT /messages/1 or /messages/1.json
@@ -65,6 +77,6 @@ class MessagesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def message_params
-      params.require(:message).permit(:sender_id, :recipient_id, :content)
+      params.require(:message).permit(:sender_id, :content, :conversation_id)
     end
 end
