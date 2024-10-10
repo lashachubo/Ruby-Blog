@@ -1,0 +1,10 @@
+<%= turbo_frame_tag "listings" do  %>
+    <div id="listings" class="min-w-full">
+      <% @listings.each do |listing| %>
+        <%= render listing %>
+        <p>
+          <%= link_to "Show this listing", listing, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+        </p>
+      <% end %>
+    </div>
+  <% end %>

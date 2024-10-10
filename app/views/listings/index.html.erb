@@ -4,22 +4,17 @@
   <% end %>
   <%# app/views/listings/index.html.erb %>
   
-  <%= turbo_frame_tag @listings do  %>
   <% content_for :title, "Listings" %>
 
   <div class="flex justify-between items-center">
     <h1 class="font-bold text-4xl">Listings</h1>
-    <%= link_to "New listing", new_listing_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
-  </div>
-
-  <div id="listings" class="min-w-full">
-    <% @listings.each do |listing| %>
-      <%= render listing %>
-      <p>
-        <%= link_to "Show this listing", listing, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-      </p>
+    <%= turbo_frame_tag "new_listing" do  %>
+     <%= link_to "New listing", new_listing_path, data: {turbo_frame: "listings"}, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
     <% end %>
   </div>
+
+  <%= render "index", listings: @listings %>
+
   <% if @listings.prev_page %>
     <%= link_to 'Previous', listings_path(page: @listings.prev_page) %>
     <% end %>
@@ -27,5 +22,4 @@
     <% if @listings.next_page %>
     <%= link_to 'Next', listings_path(page: @listings.next_page) %>
   <% end %>  
-  <% end %>
 </div>

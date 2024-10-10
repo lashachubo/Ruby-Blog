@@ -11,10 +11,14 @@
 </head>
 <body class="bg-zinc-800 text-white font-sans">
     <header class="bg-cream-dark py-4 ">
-      <div class="flex items-center ml-8 mt-4">
-        <h1 class="text-2xl font-bold">
-          <%= link_to "Blogs", blog_posts_path %>
-        </h1>
+      <div class="flex items-center ml-8 ">
+        <div>
+          <h1 class="text-2xl font-bold">
+            <%= link_to "Blogs", blog_posts_path %>          
+          </h1>
+        </div>
+
+        
         <div class="flex ml-auto mr-6">
             <% if user_signed_in? %>
             <%= link_to "Profile", edit_user_registration_path, class: "ml-3 hover:underline" %>
@@ -26,7 +30,17 @@
             <% end %>
         </div>
       </div>
+<hr class="mt-4 border-t border-gray-300">
 
+      <div class="flex flex-col ml-8 mt-12 ">
+        <div class="font-bold">
+          <%= link_to "Blogs", blog_posts_path %>          
+        </div>
+        <div class="font-bold mt-8">
+          <%= link_to "Market", listings_path %>
+        </div>
+      </div>
+    
     </header>
 
     <main class="container mx-auto mt-12 px-5">
